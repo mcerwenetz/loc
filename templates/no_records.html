@@ -69,38 +69,10 @@
 </head>
 <body>
     <header>
-        <h1>Position</h1>
+        <h1>No Records</h1>
     </header>
     <div class="container">
- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>  
- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-<div id="map" style="height:400px"></div>
-
-<script>
-    const location = {{ loc }};
-    const map = L.map('map').setView([loc.lat, loc.lng ], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:''}).addTo(map);
-
-    if (loc && loc.lat && loc.lng) {
-      const latlng = [loc.lat, loc.lng];
-      L.marker(latlng).addTo(map).bindPopup('Server-Position').openPopup();
-      if (location.accuracy) L.circle(latlng, {radius: location.accuracy}).addTo(map);
-      map.setView(latlng, 14);
-    }
-  </script>
-
-  <table>
-  <tbody>
-      {% for key, value in loc.items() %}
-      <tr>
-      <td>{{ key }}</td>
-      <td>{{ value }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
+        
     </div>
 </body>
 </html>

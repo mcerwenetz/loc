@@ -13,16 +13,14 @@ def index():
         records.append(request.args.to_dict())
     else:
 
-        timestamps = [ entry['timestamp'] for enty in records]
-
         if len(records <= 5):
             return render_template("no_records.html")
         
-        elif datetime.datetime.now() - max(timestamps) < 1000:
+        elif datetime.datetime.now() - records[-1]['timestamp'] < 1000:
             records = []
             return render_template("no_records.html")
         else:
-            return render_template('base.html', notes=notes)
+            return render_template('base.html', loc=records[-1])
 
 
 if __name__ == '__main__':

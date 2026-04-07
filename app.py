@@ -2,9 +2,13 @@ from flask import Flask, render_template, request
 import json
 import time
 from waitress import serve
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
 
 records = []
 # Homepage - Liste aller Notizen

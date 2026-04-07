@@ -1,39 +1,55 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Notes{% endblock %}</title>
+    <title>{% block title %}Wo ist er{% endblock %}</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
             background: #f5f5f5;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
         }
+
         header {
             background: #2c3e50;
             color: white;
             padding: 1rem 0;
             margin-bottom: 2rem;
         }
+
         header h1 {
             text-align: center;
         }
+
         nav {
             text-align: center;
             margin-top: 1rem;
         }
+
         nav a {
             color: white;
             text-decoration: none;
@@ -42,9 +58,11 @@
             border-radius: 4px;
             background: #34495e;
         }
+
         nav a:hover {
             background: #1abc9c;
         }
+
         .btn {
             display: inline-block;
             padding: 0.5rem 1rem;
@@ -55,52 +73,69 @@
             border: none;
             cursor: pointer;
         }
+
         .btn:hover {
             background: #2980b9;
         }
+
         .btn-danger {
             background: #e74c3c;
         }
+
         .btn-danger:hover {
             background: #c0392b;
         }
-        {% block styles %}{% endblock %}
+
+            {
+            % block styles %
+        }
+
+            {
+            % endblock %
+        }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Position</h1>
     </header>
     <div class="container">
- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>  
- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <div id="map" style="height:25em;width: 25em;"></div>
 
-<div id="map" style="height:400px"></div>
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
-<script>
-    const location = {{ loc }};
-    const map = L.map('map').setView([loc.lat, loc.lng ], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:''}).addTo(map);
+        <script>
+            const loc = {{ loc | tojson }}
 
-    if (loc && loc.lat && loc.lng) {
-      const latlng = [loc.lat, loc.lng];
-      L.marker(latlng).addTo(map).bindPopup('Server-Position').openPopup();
-      if (location.accuracy) L.circle(latlng, {radius: location.accuracy}).addTo(map);
-      map.setView(latlng, 14);
-    }
-  </script>
+            // initialize map centered at lat,lng and zoom
+            const map = L.map('map').setView([loc.lon, loc.lat], 13);
 
-  <table>
-  <tbody>
-      {% for key, value in loc.items() %}
-      <tr>
-      <td>{{ key }}</td>
-      <td>{{ value }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+            // add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
 
+            // example marker
+            const latlng = new L.LatLng(loc.lat, loc.lon);
+            const marker = L.marker(latlng).addTo(map)
+                .bindPopup('Da ist er')
+                .openPopup();
+            map.panTo(latlng)
+        </script>
+    </div>
+    <div class="container">
+        <table>
+            {% for key,value in loc.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </body>
+
 </html>

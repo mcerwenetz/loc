@@ -40,7 +40,7 @@ def index():
         return render_template("no_records.html")
     else:
         curr_rec = records[-1]
-        if type(curr_rec['timestamp']) == int:
+        if len(curr_rec['timestamp'] <= 13):
             curr_rec['timestamp'] = datetime.fromtimestamp(int(curr_rec['timestamp'][:-3]))
         return render_template('base.html', loc=curr_rec)
 

@@ -36,7 +36,7 @@ def index():
     
     
     # delete all records if the latest record is older than 1 min
-    if diff > 60000:
+    if diff > 3*60*1000:
         return render_template("no_records.html")
     else:
         curr_rec = records[-1]

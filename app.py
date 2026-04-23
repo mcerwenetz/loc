@@ -40,7 +40,7 @@ def index():
         return render_template("no_records.html")
     else:
         curr_rec = records[-1]
-        curr_rec['last_record'] = datetime.fromtimestamp(curr_rec['timestamp'])
+        curr_rec['timestamp'] = datetime.fromtimestamp(int(curr_rec['timestamp']))
         return render_template('base.html', loc=curr_rec)
 
 

@@ -26,8 +26,8 @@ def index():
         return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 
-    # show only for consecutive records, not just the first one
-    if len(records) <= 5:
+    # show only if there is a record
+    if len(records) < 0:
         return render_template("no_records.html")
     else:
         latest = int(records[-1]['timestamp'])

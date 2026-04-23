@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import json
 import time
+from datetime import datetime
 from waitress import serve
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -36,10 +37,11 @@ def index():
     
     # delete all records if the latest record is older than 1 min
     if diff > 60000:
-        records = []
         return render_template("no_records.html")
     else:
-        return render_template('base.html', loc=records[-1])
+        curr_rec = records[-1]
+        curr_rec['timestamp'] = str(datetime.fromtimestamp(curr_rec['timestamp']))
+        return render_template('base.html', loc=curr_rec)
 
 
 if __name__ == '__main__':

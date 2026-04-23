@@ -27,7 +27,7 @@ def index():
 
 
     # show only if there is a record
-    if len(records) < 0:
+    if len(records) < 1:
         return render_template("no_records.html")
     else:
         latest = int(records[-1]['timestamp'])

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import json
 import time
-from datetime import datetime
+import datetime
 from waitress import serve
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -40,7 +40,8 @@ def index():
         return render_template("no_records.html")
     else:
         curr_rec = records[-1]
-        curr_rec['timestamp readable'] = datetime.fromtimestamp(int(curr_rec['timestamp'][:-3]))
+        last_updated_timestamp = datetime.datetime.fromtimestamp(int(curr_rec['timestamp'][:-3]))
+        curr_rec['last updated'] = f"{diff / 1000} s ago"
         return render_template('base.html', loc=curr_rec)
 
 
